@@ -1,0 +1,49 @@
+-- Universal Aimbot
+-- Por Pastenuggets
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Mouse = LocalPlayer:GetMouse()
+
+local AimbotSettings = {
+    Enabled = true,
+    TargetPart = "Head", -- Alvo na cabeça
+    MaximumDistance = 300, -- Distância máxima de travamento
+    -- Outras configurações aqui...
+}
+
+local function IsAlive(player)
+    local character = player.Character
+    local humanoid = character and character:FindFirstChild("Humanoid")
+    return humanoid and humanoid.Health > 0
+end
+
+local function ClosestPlayer()
+    local closest = math.huge
+    local closestPlayer = nil
+
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer and IsAlive(player) then
+            local targetPart = player.Character and player.Character[AimbotSettings.TargetPart]
+            if targetPart then
+                local _, inViewport = workspace.CurrentCamera:WorldToViewportPoint(targetPart.Position)
+                if inViewport then
+                    local distance = (targetPart.Position - workspace.CurrentCamera.CFrame.Position).Magnitude
+                    if distance < closest and distance <= AimbotSettings.MaximumDistance then
+                        closest = distance
+                        closestPlayer = player
+                    end
+                end
+            end
+        end
+    end
+
+    return closestPlayer
+end
+
+Mouse.Button2Down:Connect(function()
+    local target = ClosestPlayer()
+    if target then
+        -- Mire no jogador (implemente o movimento da câmera aqui)
+    end
+end)
