@@ -1,50 +1,61 @@
--- Auto Clicker Script Universal
+-- Script de Auto Clicker Universal para Roblox
 
+-- Variáveis de controle
 local autoClickerEnabled = false
-local clickDelay = 10  -- delay padrão de 10ms
+local clickDelay = 0.01  -- delay padrão de 10ms
 
--- Função para simular o clique (A função específica de clique deve ser substituída conforme o ambiente)
-local function simulateClick()
-    -- Este comando é apenas um marcador de posição.
-    -- No Windows, você poderia usar uma chamada ao PowerShell para simular um clique, ou outras técnicas conforme necessário.
-    print("Clique simulado!")  -- Substitua por comando de clique real
-end
+-- Criando a interface do usuário
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local StartButton = Instance.new("TextButton")
+local StopButton = Instance.new("TextButton")
+local SetDelayButton = Instance.new("TextButton")
 
--- Função para o Auto Clicker
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ResetOnSpawn = false
+
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+MainFrame.Position = UDim2.new(0.5, -100, 0.5, -75)
+MainFrame.Size = UDim2.new(0, 200, 0, 150)
+
+StartButton.Parent = MainFrame
+StartButton.BackgroundColor3 = Color3.fromRGB(65, 65, 65)
+StartButton.Position = UDim2.new(0.1, 0, 0.1, 0)
+StartButton.Size = UDim2.new(0.8, 0, 0.2, 0)
+StartButton.Text = "Iniciar Auto Clicker"
+
+StopButton.Parent = MainFrame
+StopButton.BackgroundColor3 = Color3.fromRGB(65, 65, 65)
+StopButton.Position = UDim2.new(0.1, 0, 0.4, 0)
+StopButton.Size = UDim2.new(0.8, 0, 0.2, 0)
+StopButton.Text = "Parar Auto Clicker"
+
+SetDelayButton.Parent = MainFrame
+SetDelayButton.BackgroundColor3 = Color3.fromRGB(65, 65, 65)
+SetDelayButton.Position = UDim2.new(0.1, 0, 0.7, 0)
+SetDelayButton.Size = UDim2.new(0.8, 0, 0.2, 0)
+SetDelayButton.Text = "Delay: 10ms"
+
+-- Função para simular o clique
 local function autoClicker()
     while autoClickerEnabled do
-        simulateClick()
-        os.execute("sleep " .. clickDelay / 1000)  -- Pausa por delay em segundos
+        mouse1click()  -- Simula o clique do mouse
+        wait(clickDelay)  -- Aguarda o delay definido
     end
 end
 
--- Menu simples
-local function showMenu()
-    while true do
-        print("Escolha uma opção:")
-        print("1. Iniciar Auto Clicker")
-        print("2. Parar Auto Clicker")
-        print("3. Configurar Delay para 10ms")
-        print("4. Sair")
-        
-        local choice = tonumber(io.read())
-        
-        if choice == 1 then
-            autoClickerEnabled = true
-            autoClicker()
-        elseif choice == 2 then
-            autoClickerEnabled = false
-            print("Auto Clicker parado.")
-        elseif choice == 3 then
-            clickDelay = 10
-            print("Delay configurado para 10ms.")
-        elseif choice == 4 then
-            print("Saindo...")
-            break
-        else
-            print("Opção inválida, tente novamente.")
-        end
-    end
-end
+-- Conectando botões às funções
+StartButton.MouseButton1Click:Connect(function()
+    autoClickerEnabled = true
+    autoClicker()
+end)
 
-showMenu()
+StopButton.MouseButton1Click:Connect(function()
+    autoClickerEnabled = false
+end)
+
+SetDelayButton.MouseButton1Click:Connect(function()
+    clickDelay = 0.01  -- Definindo o delay para 10ms
+    SetDelayButton.Text = "Delay: 10ms"
+end)
