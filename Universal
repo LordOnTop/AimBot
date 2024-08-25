@@ -1,45 +1,50 @@
-local ui = require("ui")  -- Usando uma biblioteca fictícia para interface, ajuste conforme a sua necessidade
+-- Auto Clicker Script Universal
 
 local autoClickerEnabled = false
 local clickDelay = 10  -- delay padrão de 10ms
 
--- Função para simular o clique
+-- Função para simular o clique (A função específica de clique deve ser substituída conforme o ambiente)
+local function simulateClick()
+    -- Este comando é apenas um marcador de posição.
+    -- No Windows, você poderia usar uma chamada ao PowerShell para simular um clique, ou outras técnicas conforme necessário.
+    print("Clique simulado!")  -- Substitua por comando de clique real
+end
+
+-- Função para o Auto Clicker
 local function autoClicker()
     while autoClickerEnabled do
-        -- Aqui você colocaria o código para executar o clique
-        print("Clicando...")  -- Representação do clique no console
-        os.execute("sleep " .. clickDelay / 1000)
+        simulateClick()
+        os.execute("sleep " .. clickDelay / 1000)  -- Pausa por delay em segundos
     end
 end
 
--- Função para iniciar o Auto Clicker
-local function startAutoClicker()
-    autoClickerEnabled = true
-    autoClicker()
+-- Menu simples
+local function showMenu()
+    while true do
+        print("Escolha uma opção:")
+        print("1. Iniciar Auto Clicker")
+        print("2. Parar Auto Clicker")
+        print("3. Configurar Delay para 10ms")
+        print("4. Sair")
+        
+        local choice = tonumber(io.read())
+        
+        if choice == 1 then
+            autoClickerEnabled = true
+            autoClicker()
+        elseif choice == 2 then
+            autoClickerEnabled = false
+            print("Auto Clicker parado.")
+        elseif choice == 3 then
+            clickDelay = 10
+            print("Delay configurado para 10ms.")
+        elseif choice == 4 then
+            print("Saindo...")
+            break
+        else
+            print("Opção inválida, tente novamente.")
+        end
+    end
 end
 
--- Função para parar o Auto Clicker
-local function stopAutoClicker()
-    autoClickerEnabled = false
-end
-
--- Interface de usuário
-local function createMenu()
-    local menu = ui.newMenu()
-
-    -- Primeiro Menu: Auto Clicker
-    local autoClickerMenu = menu:addSubMenu("Auto Clicker")
-    autoClickerMenu:addButton("Iniciar", startAutoClicker)
-    autoClickerMenu:addButton("Parar", stopAutoClicker)
-
-    -- Segundo Menu: Configurar delay
-    local delayMenu = menu:addSubMenu("Configurar Delay")
-    delayMenu:addButton("Definir Delay para 10ms", function()
-        clickDelay = 10
-        print("Delay definido para 10ms")
-    end)
-
-    menu:show()
-end
-
-createMenu()
+showMenu()
